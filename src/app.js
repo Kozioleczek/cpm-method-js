@@ -83,6 +83,12 @@ const generateGraph = () => {
 
   // Tworzenie i wyświetlanie grafu
   new Network(container, data, options);
+
+  const taskTable = document.getElementById("criticalPath");
+
+  taskTable.textContent = `Sciezka krytyczna: ${criticalPathTasks.map(
+    (task) => task.name
+  )}`;
 };
 
 document.addEventListener("DOMContentLoaded", function () {
