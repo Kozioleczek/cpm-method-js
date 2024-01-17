@@ -22,25 +22,27 @@ let nodes = [];
 let edges = [];
 
 tasks.forEach((task) => {
-  const label = `${task.name}\nDuration: ${task.duration}\nEarliest Start: ${task.earliestStart}\nLatest Start: ${task.latestStart}`;
-  nodes.push({ id: task.name, label: label });
+  const label = `${task.name}\nES: ${task.earliestStart}\nLS: ${task.latestStart}\n ======== \nEF: ${task.earliestFinish}\nLF: ${task.latestFinish}`;
+
+  // Sprawdź, czy węzeł jest na ścieżce krytycznej
+  const isCriticalNode = criticalPathTasks.some(
+    (criticalTask) => criticalTask.name === task.name
+  );
+
+  // Dostosuj styl węzłów na ścieżce krytycznej
+  const nodeStyle = {
+    id: task.name,
+    label: label,
+    color: isCriticalNode ? "red" : "lightblue", // Zmiana koloru węzła na ścieżce krytycznej
+    borderWidth: isCriticalNode ? 3 : 1, // Zmiana grubości obramowania węzła na ścieżce krytycznej
+  };
+
+  nodes.push(nodeStyle);
+
   task.dependencies.forEach((dependencyName) => {
-    const edgeLabel = `${task.name}${task.duration}`;
+    const edgeLabel = `${dependencyName}${task.name}${task.duration}`;
     const edge = { from: dependencyName, to: task.name, label: edgeLabel };
-
-    // Sprawdź, czy krawędź jest na ścieżce krytycznej
-    const isCriticalEdge = criticalPathTasks.some(
-      (criticalTask) =>
-        criticalTask.name === task.name &&
-        criticalTask.dependencies.includes(dependencyName)
-    );
-
-    // Dostosuj styl tylko dla krawędzi na ścieżce krytycznej
-    if (isCriticalEdge) {
-      edge.width = 2; // Pogrubienie krawędzi
-      edge.color = "red"; // Zmiana koloru krawędzi
-    }
-
+    edge.color = "gray";
     edges.push(edge);
   });
 });
@@ -53,6 +55,7 @@ const data = {
 };
 const options = {
   edges: {
+    color: "gray",
     arrows: {
       to: {
         enabled: true,
@@ -69,6 +72,9 @@ const options = {
       nodeSpacing: 200,
     },
   },
+  nodes: {
+    shape: "box", // Kształt węzła (możesz użyć innych kształtów)
+  },
 };
 
 // Tworzenie i wyświetlanie grafu
@@ -78,3 +84,5 @@ console.log(
   "Critical Path: ",
   criticalPathTasks.map((task) => task.name)
 );
+
+console.log("🚀 ~ tasks:", tasks);

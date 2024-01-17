@@ -615,25 +615,25 @@ let criticalPathTasks = _cpmMethod.findCriticalPath(tasks);
 let nodes = [];
 let edges = [];
 tasks.forEach((task)=>{
-    const label = `${task.name}\nDuration: ${task.duration}\nEarliest Start: ${task.earliestStart}\nLatest Start: ${task.latestStart}`;
-    nodes.push({
+    const label = `${task.name}\nES: ${task.earliestStart}\nLS: ${task.latestStart}\n ======== \nEF: ${task.earliestFinish}\nLF: ${task.latestFinish}`;
+    // Sprawdź, czy węzeł jest na ścieżce krytycznej
+    const isCriticalNode = criticalPathTasks.some((criticalTask)=>criticalTask.name === task.name);
+    // Dostosuj styl węzłów na ścieżce krytycznej
+    const nodeStyle = {
         id: task.name,
-        label: label
-    });
+        label: label,
+        color: isCriticalNode ? "red" : "lightblue",
+        borderWidth: isCriticalNode ? 3 : 1
+    };
+    nodes.push(nodeStyle);
     task.dependencies.forEach((dependencyName)=>{
-        const edgeLabel = `${task.name}${task.duration}`;
+        const edgeLabel = `${dependencyName}${task.name}${task.duration}`;
         const edge = {
             from: dependencyName,
             to: task.name,
             label: edgeLabel
         };
-        // Sprawdź, czy krawędź jest na ścieżce krytycznej
-        const isCriticalEdge = criticalPathTasks.some((criticalTask)=>criticalTask.name === task.name && criticalTask.dependencies.includes(dependencyName));
-        // Dostosuj styl tylko dla krawędzi na ścieżce krytycznej
-        if (isCriticalEdge) {
-            edge.width = 2; // Pogrubienie krawędzi
-            edge.color = "red"; // Zmiana koloru krawędzi
-        }
+        edge.color = "gray";
         edges.push(edge);
     });
 });
@@ -645,6 +645,7 @@ const data = {
 };
 const options = {
     edges: {
+        color: "gray",
         arrows: {
             to: {
                 enabled: true,
@@ -660,11 +661,15 @@ const options = {
             levelSeparation: 200,
             nodeSpacing: 200
         }
+    },
+    nodes: {
+        shape: "box"
     }
 };
 // Tworzenie i wyświetlanie grafu
 new (0, _visNetwork.Network)(container, data, options);
 console.log("Critical Path: ", criticalPathTasks.map((task)=>task.name));
+console.log("\uD83D\uDE80 ~ tasks:", tasks);
 
 },{"vis-network/standalone/esm/vis-network":"i9ztt","./cpm-method":"bdDVQ"}],"i9ztt":[function(require,module,exports) {
 /**
