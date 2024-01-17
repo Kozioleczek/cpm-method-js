@@ -1,0 +1,27 @@
+{
+  "name": "cpm-method-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kozioleczek/cpm-method-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kozioleczek/cpm-method-js/issues"
+  },
+  "homepage": "https://github.com/Kozioleczek/cpm-method-js#readme",
+  "dependencies": {
+    "parcel": "^2.11.0",
+    "vis-network": "^9.1.9"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.11.0"
+  }
+}
