@@ -86,7 +86,7 @@ const generateGraph = () => {
 
   const taskTable = document.getElementById("criticalPath");
 
-  taskTable.textContent = `Sciezka krytyczna: ${criticalPathTasks.map(
+  taskTable.innerHTML = `Sciezka krytyczna: ${criticalPathTasks.map(
     (task) => task.name
   )}`;
 };
